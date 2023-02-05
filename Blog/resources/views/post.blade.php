@@ -7,10 +7,12 @@
                 {{$post->title}}
             </h1>
             <div>
-                {{--  !! will escape html tag and render them  --}}
-                {!!$post->body!!}
+                <p>
+                    {{ $post->body }}
+                </p>
             </div>
         </article>
+
         <a href="/"> go back</a>
 
     </x-slot:content>
