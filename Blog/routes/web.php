@@ -1,6 +1,9 @@
 <?php
 
+use App\Models\Post;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Route;
+use Spatie\YamlFrontMatter\YamlFrontMatter;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +16,22 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// home page route
 Route::get('/', function () {
-    return view('welcome');
+
+    // get all existing post
+    return view('posts', [
+        'posts' => Post::all(),
+    ]);
 });
+
+// get post by its slug
+Route::get('post/{post}', function ($slug) {
+
+    // find a post by its slug and pass it to a view called "post"
+    $post = Post::find($slug);
+
+    return view('post', [
+        'post' => $post,
+    ]);
+})->where('post', '[A-z_\-]+');;
