@@ -1,26 +1,18 @@
 <x-layout name="layout">
+    @include('_post-header')
 
-    <x-slot:banner>
-        <h1>My Blog</h1>
-    </x-slot:banner>
+    <main class="max-w-6xl mx-auto mt-6 lg:mt-20 space-y-6">
 
-    <x-slot:content>
-            @foreach ($posts as $post)
-                <article class="{{ $loop->even ? 'even' : 'odd' }}">
-                    <h1>
-                        <a href="/post/{{ $post->slug }}">
-                            {{ $post->title }}
-                        </a>
-                    </h1>
-                    <p>
-                        <a href="/categories/{{ $post->category->slug }}"> {{ $post->category->name }} </a>
-                    </p>
-                    <div>
-                        {{ $post->excerpt }}
-                    </div>
-                </article>
-            @endforeach
-    </x-slot:content>
+        @if($posts->count())
+            <x-posts-grid :posts="$posts"/>
+        @else
+            <p class="text-center">
+                No post yet. Please check back later
+            </p>
+        @endif
+
+    </main>
+
 </x-layout>
 
 

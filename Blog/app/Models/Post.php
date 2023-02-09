@@ -18,6 +18,13 @@ class Post extends Model
     protected $guarded = [];
 
     /**
+     * load Post data with the category and the author from the DB
+     *
+     * @var string[]
+     */
+    protected $with = ['category', 'author'];
+
+    /**
      * return a post that belong to a specific category
      *
      * @return BelongsTo
@@ -33,8 +40,8 @@ class Post extends Model
      *
      * @return BelongsTo
      */
-    public function user(): BelongsTo
+    public function author(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
 }
