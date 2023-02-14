@@ -22,6 +22,7 @@ Route::get('/', function () {
     // get all existing post
     return view('posts', [
         'posts' => Post::latest('published_at')->get(),
+        'categories' => Category::all()
     ]);
 });
 
@@ -29,6 +30,7 @@ Route::get('/', function () {
 Route::get('post/{post:slug}', function (Post $post) { // Post::where('slug', $post)->firstOrFail()
     return view('post', [
         'post' => $post,
+
     ]);
 });
 
@@ -36,6 +38,8 @@ Route::get('post/{post:slug}', function (Post $post) { // Post::where('slug', $p
 Route::get('categories/{category:slug}', function (Category $category) {
     return view('posts',[
         'posts' => $category->posts,
+        'currentCategory' => $category,
+        'categories' => Category::all()
     ]);
 });
 
@@ -43,5 +47,6 @@ Route::get('categories/{category:slug}', function (Category $category) {
 Route::get('authors/{author:username}', function (User $author) {
     return view('posts',[
         'posts' => $author->posts,
+        'categories' => Category::all()
     ]);
 });
