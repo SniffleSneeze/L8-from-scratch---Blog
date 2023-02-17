@@ -1,7 +1,6 @@
 <?php
 
-use App\Models\Category;
-use App\Models\Post;
+use App\Http\Controllers\PostController;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
@@ -17,36 +16,24 @@ use Illuminate\Support\Facades\Route;
 */
 
 // home page route
-Route::get('/', function () {
-
-    // get all existing post
-    return view('posts', [
-        'posts' => Post::latest('published_at')->get(),
-        'categories' => Category::all()
-    ]);
-});
+Route::get('/', [PostController::class, 'index'])->name('home');
 
 // get post by its slug
-Route::get('post/{post:slug}', function (Post $post) { // Post::where('slug', $post)->firstOrFail()
-    return view('post', [
-        'post' => $post,
-
-    ]);
-});
-
-// get category by slog
-Route::get('categories/{category:slug}', function (Category $category) {
-    return view('posts',[
-        'posts' => $category->posts,
-        'currentCategory' => $category,
-        'categories' => Category::all()
-    ]);
-});
+Route::get('posts/{post:slug}', [PostController::class, 'show']);
 
 // get author by its userName
 Route::get('authors/{author:username}', function (User $author) {
-    return view('posts',[
-        'posts' => $author->posts,
-        'categories' => Category::all()
-    ]);
+    return view('posts.index',
+        [
+            'posts' => $author->posts,
+        ]);
 });
+
+// get category by slug using a rout
+//Route::get('categories/{category:slug}', function (Category $category) {
+//    return view('posts', [
+//        'posts' => $category->posts,
+//        'currentCategory' => $category,
+//        'categories' => Category::all()
+//    ]);
+//})->name('category');

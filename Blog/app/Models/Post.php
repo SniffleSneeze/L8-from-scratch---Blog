@@ -25,6 +25,26 @@ class Post extends Model
     protected $with = ['category', 'author'];
 
     /**
+     *  the function is call Filter, the "scope" at the front belong to laravel magic
+     *
+     * @param $query
+     * @param array $filters
+     * @return void
+     */
+    public function scopeFilter($query, array $filters): void
+    {
+        $query->when($filters['search'] ?? false, fn($query, $search) => $query
+            ->where('title', 'like', '%' . $search . '%')
+            ->orWhere('body', 'like', '%' . $search . '%')
+        );
+
+        $query->when($filters['category'] ?? false, fn($query, $category) => $query
+            ->whereHas('category', fn($query) => $query
+                ->where('slug', $category)
+            ));
+    }
+
+    /**
      * return a post that belong to a specific category
      *
      * @return BelongsTo
